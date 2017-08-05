@@ -43,11 +43,13 @@
   } 
   
   function calcQualLevel(form) {
-    var intAttr = new Array (3); 
-    var intDieRoll = new Array (3);
-    var intDiff = new Array(3); 
-    var intSkillPts;
-    var i, intQL, n;
+    var intAttr = new Array (3); //Attributes
+    var intDieRoll = new Array (3); //Die rolls
+    var intDiff = new Array(3); //Differences between attributes and die rolls
+    var intMod = new Array(3); //Modifiers to die rolls
+    var intSkillPts; //Skill points; for roll to succeed, must be >= 0 after calculations
+    var intQL; //Quality level; how well the rolls succeeded
+    var i, n; //Loop counters
 
     intSkillPts = form.intSkillPts.value;  //Get skill points from form
 //    alert( "Skill Points entered = " + intSkillPts);
@@ -65,6 +67,13 @@
     intDieRoll[2] = form.intRoll03.value;
 /*    alert( "Roll#1 = " + intDieRoll[0] + " Roll#2 = " + intDieRoll[1] + 
     " Roll#3 = " + intDieRoll[2]); */
+    
+    //Get modifiers from form
+    intMod[0] = form.intMod01.value;
+    intMod[1] = form.intMod02.value;
+    intMod[2] = form.intMod03.value;
+/*    alert( "Mod#1 = " + intMod[0] + " Mod#2 = " + intMod[1] + 
+    " Mod#3 = " + intMod[2]); */
       
     for (i = 0; i < intDieRoll.length; i++) {
 //For each die roll, check for immediate failure
@@ -74,6 +83,11 @@
         document.getElementById("QualityLevel").innerHTML = -1;
         return;
       } //end if intDieRoll[i] == 20
+      else {
+          if(intDieRoll[i] == 1){
+              alert("You rolled a 1! Critical success!!!);
+              } //end if die roll was 1
+      } //end else
     } //end for each die roll
       
     for (i = 0; i < intDieRoll.length; i++) {
@@ -81,7 +95,7 @@
 //Not an immediate failure
 //if (Roll > Attribute), must spend skill pts to bring roll down to attribute; subtract diff from skillPts
 //if, after all 3 rolls have been handled, skillPts >= 0, calc QL
-      intDiff[i] = intDieRoll[i] - intAttr[i];
+      intDiff[i] = intDieRoll[i] + intMod[i] - intAttr[i];
       if (intDiff[i] > 0) {
         //Roll larger than attribute; subtract diff from skill points
         intSkillPts -= intDiff[i]; 
@@ -179,7 +193,21 @@
               Roll 3: <input type="number" name="intRoll03">
             </td>
           </tr>
-        </table>
+
+                      
+          <tr>
+            <td>
+              Modifier 1: <input type="number" name="intMod01">
+            </td>
+            <td>
+              Modifier 2: <input type="number" name="intMod02">
+            </td>
+            <td>
+              Modifier 3: <input type="number" name="intMod03">
+            </td>
+          </tr>
+
+          </table>
         
         <script>
           //Put the focus in the Skill Points field
