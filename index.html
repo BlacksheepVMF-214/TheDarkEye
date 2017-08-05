@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="no-js" ng-app="Starter">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <title>PROOF OF CONCEPT</title>
+
+        <!-- build:css css/vendor.css   -->
+        <link rel="stylesheet" href="assets/libs/bootstrap-css/css/bootstrap.css ">
+        <!-- endbuild -->
+
+        <!-- build:css css/main.css   -->
+        <link href="assets/css/style.css" rel="stylesheet">
+        <!-- endbuild -->
+
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
+
+    <script>
+/*  function rollD20() {
+    var intDieRollRoll = Math.floor((Math.random() * 20) + 1);
+//    document.getElementById("demo").innerHTML = intDieRollRoll;
+    return (intDieRollRoll);
+    if(intDieRollRoll == 20) {
+      alert("Failure!!!")
+    }
+  } */
+  
+  function calcQualLevel(form) {
+    var intAttr = new Array (3); 
+    var intDieRoll = new Array (3);
+    var intDiff = new Array(3); 
+    var intSkillPts;
+    var i, intQL, n;
+
+    intSkillPts = form.intSkillPts.value;  //Get skill points from form
+//    alert( "Skill Points entered = " + intSkillPts);
+    
+    //Get attributes from form
+    intAttr[0] = form.intAttr01.value;
+    intAttr[1] = form.intAttr02.value;
+    intAttr[2] = form.intAttr03.value;
+/*    alert( "Attr#1 = " + intAttr[0] + " Attr#2 = " + intAttr[1] + " Attr#3 = " 
+    + intAttr[2]); */
+    
+    //Get die rolls from form
+    intDieRoll[0] = form.intRoll01.value;
+    intDieRoll[1] = form.intRoll02.value;
+    intDieRoll[2] = form.intRoll03.value;
+/*    alert( "Roll#1 = " + intDieRoll[0] + " Roll#2 = " + intDieRoll[1] + 
+    " Roll#3 = " + intDieRoll[2]); */
+      
+    for (i = 0; i < intDieRoll.length; i++) {
+//For each die roll, check for immediate failure
+      if(intDieRoll[i] == 20) {
+        alert("20 on the die = FAILURE!!!");
+        document.getElementById("SkillPtsRem").innerHTML = -1;
+        document.getElementById("QualityLevel").innerHTML = -1;
+        return;
+      } //end if intDieRoll[i] == 20
+    } //end for each die roll
+      
+    for (i = 0; i < intDieRoll.length; i++) {
+    
+//Not an immediate failure
+//if (Roll > Attribute), must spend skill pts to bring roll down to attribute; subtract diff from skillPts
+//if, after all 3 rolls have been handled, skillPts >= 0, calc QL
+      intDiff[i] = intDieRoll[i] - intAttr[i];
+      if (intDiff[i] > 0) {
+        //Roll larger than attribute; subtract diff from skill points
+        intSkillPts -= intDiff[i]; 
+        //alert ("Diff: " + intDiff[i] + " Current skill points: " + intSkillPts);
+        if (intSkillPts < 0) {
+          alert("You've run out of Skill Points = FAILURE!!!");
+          document.getElementById("SkillPtsRem").innerHTML = -1;
+          document.getElementById("QualityLevel").innerHTML = -1;
+          return;
+        } //end if (intSkillPts < 0) 
+      } //end if (intDiff > 0)
+    } //end for each die roll
+  
+//    alert("Skill points remaining: " + intSkillPts);
+    if(intSkillPts >= 0) { 
+      intQL = Math.floor(intSkillPts / 3) + 1; 
+    } //end if(intSkillPts >= 0)
+    else {
+      intQL = -1;
+    } //end else
+//    document.getElementById("form.intQualLevel").value = intQL;
+  
+//    alert("Skill pts rem: " + intSkillPts + " Quality Level = " + intQL);
+    document.getElementById("SkillPtsRem").innerHTML = intSkillPts;
+    document.getElementById("QualityLevel").innerHTML = intQL;
+}
+</script>
+
+      <script>
+        function resetValues(form) {
+          document.getElementById("SkillPtsRem").innerHTML = 0;
+          document.getElementById("QualityLevel").innerHTML = 0;
+//          document.getElementById("intSkillPts").innerHTML = "0";
+//          document.getElementById("intSkillPts").innerHTML = "0";
+        }
+      </script>
+
+    </head>
+    
+    <body>
+<!--        <div class="container" ng-controller="HomeController">
+            <figure class="text-center">
+                <img id="wakanda-logo" src="assets/img/wakanda.png" alt="wakanda logo">
+            </figure>
+        </div> -->
+
+        <!-- build:js scripts/vendor.js   -->
+        <script src="assets/libs/angular/angular.js"></script>
+        <script src="assets/libs/angular-wakanda/angular-wakanda.js"></script>
+        <!-- endbuild -->
+        
+    	<!-- build:js scripts/main.js   -->
+        <script src="app/app.js"></script>
+        <script src="app/controllers/home.js"></script>
+        <!-- endbuild -->
+
+      <h1>PROOF OF CONCEPT</h1>
+      
+      <br><br>
+      <form id="DataEntryForm" action="TBD">
+        <table>
+          <tr>
+            <td>
+              <input type="button" value="RESET" onclick="resetValues(this.form)">
+            </td>
+            <td>
+              Skill points: <input type="number" name="intSkillPts" id="SP">
+            </td>
+            <td>
+              <br>
+              <!-- QL: <input type="number" name="intQualLevel"> -->
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              Attr 1: <input type="number" name="intAttr01">
+            </td>
+            <td>
+              Attr 2: <input type="number" name="intAttr02">
+            </td>
+            <td>
+              Attr 3: <input type="number" name="intAttr03">
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              Roll 1: <input type="number" name="intRoll01">
+            </td>
+            <td>
+              Roll 2: <input type="number" name="intRoll02">
+            </td>
+            <td>
+              Roll 3: <input type="number" name="intRoll03">
+            </td>
+          </tr>
+        </table>
+        
+        <script>
+          //Put the focus in the Skill Points field
+          document.getElementById("SP").focus();
+        </script>
+        <br>
+<!--        Diff 1: <input type="number" name="intDiff01">
+        Diff 2: <input type="number" name="intDiff02">
+        Diff 3: <input type="number" name="intDiff03"> 
+        <br> -->
+        <button type="button" onclick="calcQualLevel(this.form)">Calculate QL</button>
+      </form> 
+      
+      <table id="resultsTbl">
+        <tr>
+          <th>Skill pts rem</th>
+          <th>QL</th>
+        </tr>
+        
+        <tr>
+          <td id="SkillPtsRem">0</td>
+          <td id="QualityLevel">0</td>
+        </tr>
+        
+      </table>
+            
+      <br>
+    </body>
+</html>
