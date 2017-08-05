@@ -1,0 +1,60 @@
+﻿{
+	"tabbedWindows": [],
+	"solutionExplorer": {
+		"left": {
+			"tabs": [
+				{
+					"kind": "extensionView",
+					"path": "./web/index.html",
+					"name": "index.html",
+					"showOutline": false,
+					"outlineWidth": 250,
+					"showOutput": false,
+					"outputHeight": 250,
+					"showStatusBar": true,
+					"showToolbar": true,
+					"sourceCodeMode": false,
+					"startSelection": 0,
+					"endSelection": 0,
+					"leftToRightSelection": true,
+					"lastModificationTime": "4!8!2017",
+					"extensionFolderName": "wakanda-extension-web-editor",
+					"closable": true
+				}
+			],
+			"current": 0
+		},
+		"right": {
+			"tabs": [],
+			"current": -1
+		},
+		"bottom": {
+			"tabs": [],
+			"current": -1
+		},
+		"side": {
+			"tabs": [],
+			"current": -1
+		},
+		"mainSplitter": {
+			"leftPanelWidth": 300,
+			"rightPanelWidth": 800,
+			"leftPanelCollapsed": 0,
+			"rightPanelCollapsed": 0
+		},
+		"hSplitter": {
+			"leftPanelWidth": 644,
+			"rightPanelWidth": 100,
+			"leftPanelCollapsed": 0,
+			"rightPanelCollapsed": 1
+		},
+		"vSplitter": {
+			"topPanelHeight": 370,
+			"bottomPanelHeight": 200,
+			"topPanelCollapsed": 0,
+			"bottomPanelCollapsed": 1
+		},
+		"home": "side",
+		"startPage": "left"
+	}
+}
