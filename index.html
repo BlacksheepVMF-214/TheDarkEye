@@ -8,6 +8,8 @@
 
         <!-- build:css css/vendor.css   -->
         <link rel="stylesheet" href="assets/libs/bootstrap-css/css/bootstrap.css ">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+
         <!-- endbuild -->
 
         <!-- build:css css/main.css   -->
@@ -83,11 +85,13 @@
         document.getElementById("QualityLevel").innerHTML = -1;
         return;
       } //end if intDieRoll[i] == 20
-      else {
-          if(intDieRoll[i] == 1){
-              alert("You rolled a 1! Critical success!!!);
-              } //end if die roll was 1
-      } //end else
+    } // end for each die roll
+    
+    for (i = 0; i < intDieRoll.length; i++) {
+      if(intDieRoll[i] == 1) {
+          //Potential critical success
+          alert("You rolled a 1: CRITICAL SUCCESS!!!");
+      }
     } //end for each die roll
       
     for (i = 0; i < intDieRoll.length; i++) {
@@ -152,17 +156,17 @@
         <script src="app/controllers/home.js"></script>
         <!-- endbuild -->
 
-      <h1>PROOF OF CONCEPT</h1>
+      <h1>DAS SHWARZE AUGE (THE DARK EYE)</h1>
       
       <br><br>
       <form id="DataEntryForm" action="TBD">
-        <table>
+        <table >
           <tr>
             <td>
-              <input type="button" value="RESET" onclick="resetValues(this.form)">
+              <input type="button" value="RESET" onclick="resetValues(this.form)" class="w3-half">
             </td>
             <td>
-              Skill points: <input type="number" name="intSkillPts" id="SP">
+              Skill points <input type="number" name="intSkillPts" id="SP" class="w3-half">
             </td>
             <td>
               <br>
@@ -172,64 +176,58 @@
           
           <tr>
             <td>
-              Attr 1: <input type="number" name="intAttr01">
+              Attribute 1 <input type="number" name="intAttr01" class="w3-third">
             </td>
             <td>
-              Attr 2: <input type="number" name="intAttr02">
+              Attribute 2 <input type="number" name="intAttr02" class="w3-third">
             </td>
             <td>
-              Attr 3: <input type="number" name="intAttr03">
+              Attribute 3 <input type="number" name="intAttr03" class="w3-third">
             </td>
           </tr>
           
           <tr>
             <td>
-              Roll 1: <input type="number" name="intRoll01">
+              Roll 1 <input type="number" name="intRoll01" class="w3-third">
             </td>
             <td>
-              Roll 2: <input type="number" name="intRoll02">
+              Roll 2 <input type="number" name="intRoll02" class="w3-third">
             </td>
             <td>
-              Roll 3: <input type="number" name="intRoll03">
+              Roll 3 <input type="number" name="intRoll03" class="w3-third">
             </td>
           </tr>
-
-                      
+          
           <tr>
             <td>
-              Modifier 1: <input type="number" name="intMod01">
+              Modifier 1 <input type="number" name="intMod01" class="w3-third">
             </td>
             <td>
-              Modifier 2: <input type="number" name="intMod02">
+              Modifier 2 <input type="number" name="intMod02" class="w3-third">
             </td>
             <td>
-              Modifier 3: <input type="number" name="intMod03">
+              Modifier 3 <input type="number" name="intMod03" class="w3-third">
             </td>
           </tr>
-
-          </table>
+        </table>
         
         <script>
           //Put the focus in the Skill Points field
           document.getElementById("SP").focus();
         </script>
         <br>
-<!--        Diff 1: <input type="number" name="intDiff01">
-        Diff 2: <input type="number" name="intDiff02">
-        Diff 3: <input type="number" name="intDiff03"> 
-        <br> -->
         <button type="button" onclick="calcQualLevel(this.form)">Calculate QL</button>
       </form> 
       
       <table id="resultsTbl">
         <tr>
-          <th>Skill pts rem</th>
-          <th>QL</th>
+          <th class="w3-half">Skill pts rem</th>
+          <th class="w3-half">QL</th>
         </tr>
         
         <tr>
-          <td id="SkillPtsRem">0</td>
-          <td id="QualityLevel">0</td>
+          <td id="SkillPtsRem" class="w3-half">0</td>
+          <td id="QualityLevel" class="w3-half">0</td>
         </tr>
         
       </table>
