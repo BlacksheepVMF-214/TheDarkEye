@@ -230,7 +230,292 @@
           <td id="QualityLevel" class="w3-half">0</td>
         </tr>
         
+      </table><!DOCTYPE html>
+<html class="no-js" ng-app="Starter">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <title>Das Shwarze Auge (The Dark Eye)</title>
+
+        <!-- build:css css/vendor.css   -->
+        <link rel="stylesheet" href="assets/libs/bootstrap-css/css/bootstrap.css ">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+
+        <!-- endbuild -->
+
+        <!-- build:css css/main.css   -->
+        <link href="assets/css/style.css" rel="stylesheet">
+        <!-- endbuild -->
+
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
+
+    <script>
+  function rollD20() {
+    var intDieRollRoll = Math.floor((Math.random() * 20) + 1);
+//    document.getElementById("demo").innerHTML = intDieRollRoll;
+    return (intDieRollRoll);
+    if(intDieRollRoll == 20) {
+      alert("Failure!!!")
+    }
+  } 
+  
+  function calcQualLevel(form) {
+    var intAttr = new Array (3); //Attributes
+    var intDieRoll = new Array (3); //Die rolls
+    var intDiff = new Array(3); //Differences between attributes and die rolls
+    var intMod = new Array(3); //Modifiers to die rolls
+    var intSkillPts; //Skill pts must be nonnegative for roll to succeed
+    var intQL; //Quality level: how well the rolls succeeded
+    var i; //Loop counter
+    var boolRolledA1 = new Boolean(false);
+
+    intSkillPts = form.intSkillPts.value;  //Get skill points from form
+//    alert( "Skill Points entered = " + intSkillPts);
+    
+    //Get attributes from form
+    intAttr[0] = form.intAttr01.value;
+    intAttr[1] = form.intAttr02.value;
+    intAttr[2] = form.intAttr03.value;
+/*    alert( "Attr#1 = " + intAttr[0] + " Attr#2 = " + intAttr[1] + " Attr#3 = " 
+    + intAttr[2]); */
+    
+    //Get die rolls from form
+    intDieRoll[0] = form.intRoll01.value;
+    intDieRoll[1] = form.intRoll02.value;
+    intDieRoll[2] = form.intRoll03.value; 
+
+/*    for( i = 0; i < intDieRoll.length; i++ ) {
+        intDieRoll[i] = rollD20(); //roll the dice!
+    } 
+    alert( "Roll#1 = " + intDieRoll[0] + " Roll#2 = " + intDieRoll[1] + 
+    " Roll#3 = " + intDieRoll[2]); */
+    
+    //Get die roll modifiers from form
+    intMod[0] = form.intMod01.value;
+    intMod[1] = form.intMod02.value;
+    intMod[2] = form.intMod03.value;
+/*    alert( "Mod#1 = " + intMod[0] + " Mod#2 = " + intMod[1] + 
+    " Mod#3 = " + intMod[2]);  */
+      
+    for (i = 0; i < intDieRoll.length; i++) {
+//For each die roll, check for critical failure (botch)
+      if(intDieRoll[i] == 20) {
+        alert("20 on the die = BOTCH!!!");
+        document.getElementById("SkillPtsRem").innerHTML = -1;
+        document.getElementById("SkillPtsRem").style.backgroundColor = "red";
+        document.getElementById("SkillPtsRem").style.color = "white";
+        
+        document.getElementById("QualityLevel").innerHTML = -1;
+        document.getElementById("QualityLevel").style.backgroundColor = "red";
+        document.getElementById("QualityLevel").style.color = "white";
+        return;
+      } //end if intDieRoll[i] == 20
+    } // end for each die roll
+    
+    for (i = 0; i < intDieRoll.length; i++) {
+      if(intDieRoll[i] == 1) {
+          //Potential critical success
+          boolRolledA1 = true;
+//          alert("You rolled a 1: POTENTIAL CRITICAL SUCCESS!!!");
+
+      } //end if(intDieRoll is 1)
+    } //end for each die roll
+//    alert(boolRolledA1);
+
+      
+    for (i = 0; i < intDieRoll.length; i++) {
+    
+//Not an immediate failure
+//if (Roll > Attribute), must spend skill pts to bring roll down to attribute; subtract diff from skillPts
+//if, after all 3 rolls have been handled, skillPts >= 0, calc QL
+      intDiff[i] = intDieRoll[i] + intMod[i] - intAttr[i];
+      if (intDiff[i] > 0) {
+        //Roll larger than attribute; subtract diff from skill points
+        intSkillPts -= intDiff[i]; 
+        //alert ("Diff: " + intDiff[i] + " Current skill points: " + intSkillPts);
+        if (intSkillPts < 0) {
+//          alert("You've run out of Skill Points = FAILURE!!!");
+          document.getElementById("SkillPtsRem").innerHTML = intSkillPts;
+          document.getElementById("SkillPtsRem").style.backgroundColor = "red";
+          document.getElementById("SkillPtsRem").style.color = "white";
+        
+          document.getElementById("QualityLevel").innerHTML = -1;
+          document.getElementById("QualityLevel").style.backgroundColor = "red";
+          document.getElementById("QualityLevel").style.color = "white";
+          return;
+        } //end if (intSkillPts < 0) 
+      } //end if (intDiff > 0)
+    } //end for each die roll
+  
+//    alert("Skill points remaining: " + intSkillPts);
+    if(intSkillPts == 0) { 
+        intQL = 1; //Zero is a special case
+    }
+    else {
+      intQL = Math.min(Math.ceil(intSkillPts / 3), 6); 
+    } //end if(intSkillPts == 0)
+//    alert( "All calculations complete; did I roll a 1? " + boolRolledA1 );
+    if( boolRolledA1 == true ) {
+        intQL++;
+          document.getElementById("SkillPtsRem").style.backgroundColor = "blue";
+          document.getElementById("SkillPtsRem").style.color = "white";
+          document.getElementById("QualityLevel").style.backgroundColor = "blue";
+          document.getElementById("QualityLevel").style.color = "white";
+//        alert("I incremented QL");
+    }
+//    document.getElementById("form.intQualLevel").value = intQL;
+  
+//    alert("Skill pts rem: " + intSkillPts + " Quality Level = " + intQL);
+    document.getElementById("SkillPtsRem").innerHTML = intSkillPts;
+    document.getElementById("QualityLevel").innerHTML = intQL;
+}
+</script>
+
+      <script>
+        function resetValues(form) {
+          document.getElementById("SkillPtsRem").innerHTML = 0;
+          document.getElementById("SkillPtsRem").style.backgroundColor = "#dddddd";
+          document.getElementById("SkillPtsRem").style.color = "black";
+
+          document.getElementById("QualityLevel").innerHTML = 0;
+          document.getElementById("QualityLevel").style.backgroundColor = "#dddddd";
+          document.getElementById("QualityLevel").style.color = "black";
+        }
+      </script>
+
+    </head>
+    
+    <body>
+<!--        <div class="container" ng-controller="HomeController">
+            <figure class="text-center">
+                <img id="wakanda-logo" src="assets/img/wakanda.png" alt="wakanda logo">
+            </figure>
+        </div> -->
+
+        <!-- build:js scripts/vendor.js   -->
+        <script src="assets/libs/angular/angular.js"></script>
+        <script src="assets/libs/angular-wakanda/angular-wakanda.js"></script>
+        <!-- endbuild -->
+        
+    	<!-- build:js scripts/main.js   -->
+        <script src="app/app.js"></script>
+        <script src="app/controllers/home.js"></script>
+        <!-- endbuild -->
+
+      <h1 class="w3-center w3-black w3-text-gray">DAS SHWARZE AUGE <br>(THE DARK EYE)</h1>
+      
+      <br><br>
+      <form id="DataEntryForm" action="TBD" class="w3-container">
+        <table class="w3-responsive">
+          <tr>
+            <td>
+
+              Character name <input type="text" maxlength="50">
+            </td>
+          </tr>
+          <tr>
+            <td>
+
+              <input type="button" value="RESET" onclick="resetValues(this.form)" 
+                class="w3-half w3-button w3-blue">
+            </td>
+            <td>
+              Skill points <input type="number" name="intSkillPts" id="SP" 
+                class="w3-half">
+            </td>
+            <td>
+              <br>
+              <!-- QL: <input type="number" name="intQualLevel"> -->
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              Attribute 1 <input type="number" name="intAttr01" class="w3-third">
+            </td>
+            <td>
+              Attribute 2 <input type="number" name="intAttr02" class="w3-third">
+            </td>
+            <td>
+              Attribute 3 <input type="number" name="intAttr03" class="w3-third">
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              Roll 1 <input type="number" name="intRoll01" class="w3-third">
+            </td>
+            <td>
+              Roll 2 <input type="number" name="intRoll02" class="w3-third">
+            </td>
+            <td>
+              Roll 3 <input type="number" name="intRoll03" class="w3-third">
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              Modifier 1 <input type="number" name="intMod01" class="w3-third">
+            </td>
+            <td>
+              Modifier 2 <input type="number" name="intMod02" class="w3-third">
+            </td>
+            <td>
+              Modifier 3 <input type="number" name="intMod03" class="w3-third">
+            </td>
+          </tr>
+        </table>
+        
+        <script>
+          //Put the focus in the Skill Points field
+          document.getElementById("SP").focus();
+        </script>
+        <br>
+<!--        <button type="button" class="w3-button w3-purple">ROLL!</button> -->
+        <button type="button" onclick="calcQualLevel(this.form)" 
+            class="w3-button w3-green">Calculate QL</button>
+      </form> 
+      
+      <table id="resultsTbl" class="w3-responsive" style="width=100%">
+        <tr>
+          <th class="w3-half">Skill pts rem</th>
+          <th class="w3-half">QL</th>
+        </tr>
+        
+        <tr>
+          <td id="SkillPtsRem" class="w3-half">0</td>
+          <td id="QualityLevel" class="w3-half">0</td>
+        </tr>
+        
       </table>
+            
+      <br>
+    </body>
+    <footer>
+        <p>&copy;2017 David E. Nichols<br>
+        I have no connection with Ulisses Spiele, and this program is not
+        sanctioned by them in any way.</p>
+    </footer>
+</html>
+
             
       <br>
     </body>
